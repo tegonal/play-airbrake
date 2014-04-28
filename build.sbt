@@ -1,8 +1,8 @@
-organization := "eu.teamon"
+organization := "com.tegonal"
 
 name := "play-airbrake"
 
-version := "0.3.1-SNAPSHOT"
+version := "0.3.2-SNAPSHOT"
 
 scalacOptions ++= Seq("-Xlint", "-deprecation", "-unchecked", "-encoding", "UTF-8")
 
