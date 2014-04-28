@@ -1,2 +1,18 @@
-.DS_Store
+# Ignore all dotfiles...
+.*
+# except for .gitignore
+!.gitignore
+
+logs
+project/project
+project/target
 target
+bin
+tmp
+dist
+/.idea
+/*.iml
+/out
+/RUNNING_PID
+
+activator-*.sbt
