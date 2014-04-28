@@ -1,16 +1,16 @@
-## Airbrake.io notifier for Play 2.0
+## Airbrake.io notifier for Play 2.2.2
 
 ## Instalation
 
-Add `play-airbrake` to your `project/Build.scala` file
+Add `play-airbrake` to your `project/Build.scala`/`build.sbt` file
 
 ``` scala
 val appDependencies = Seq(
-  "eu.teamon" %% "play-airbrake" % "0.3.0"
+  "com.tegonal" %% "play-airbrake" % "0.3.2"
 )
 
 val main = PlayProject(appName, appVersion, appDependencies, mainLang = SCALA).settings(
-  resolvers += "teamon.eu repo" at "http://repo.teamon.eu"
+  resolvers += "Tegonal Releases" at "https://github.com/tegonal/tegonal-mvn/raw/master/"
 )
 ```
 

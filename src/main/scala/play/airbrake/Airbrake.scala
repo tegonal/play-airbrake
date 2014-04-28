@@ -15,8 +15,7 @@ object Airbrake {
   private lazy val enabled = app.configuration.getBoolean("airbrake.enabled") getOrElse Play.isProd
   private lazy val apiKey = app.configuration.getString("airbrake.apiKey") getOrElse { throw UnexpectedException(Some("Could not find airbrake.apiKey in settings")) }
   private lazy val ssl = app.configuration.getBoolean("airbrake.ssl") getOrElse false
-  private lazy val endpoint = app.configuration.getString("airbrake.endpoint") getOrElse "api.airbrake.io/notifier_api/v2/notices"
-  private lazy val host = app.configuration.getString("airbrake.host") getOrElse "api.airbrake.io"
+  private lazy val endpoint = app.configuration.getString("airbrake.endpoint") getOrElse "api.airbrake.io"
   private lazy val notifierJs = app.configuration.getString("airbrake.notifierJs") getOrElse "http://cdn.airbrake.io/notifier.min.js"
 
   /**
@@ -52,7 +51,7 @@ object Airbrake {
   protected def _notify(method: String, uri: String, data: Map[String, String], th: Throwable): Unit =
     future {
       val scheme = if (ssl) "https" else "http"
-      WS.url(scheme + "://" + endpoint).post(formatNotice(app, apiKey, method, uri, data, liftThrowable(th))).onComplete { response =>
+      WS.url(scheme + "://" + endpoint + "/notifier_api/v2/notices").post(formatNotice(app, apiKey, method, uri, data, liftThrowable(th))).onComplete { response =>
         Logger.info("Exception notice sent to Airbrake")
       }
     }
@@ -62,7 +61,7 @@ object Airbrake {
     <script src="$notifierJs"></script>
     <script type="text/javascript">
       Airbrake.setKey('$apiKey');
-      Airbrake.setHost('$host');
+      Airbrake.setHost('$endpoint');
       Airbrake.setEnvironment('${app.mode}');
       Airbrake.setGuessFunctionName(true);
     </script>
@@ -74,7 +73,7 @@ object Airbrake {
     case e => UnexpectedException(unexpected = Some(e))
   }
 
-  protected def formatNotice(app: Application, apiKey: String, method: String, uri: String, data: Map[String, String], ex: UsefulException) = {
+  protected def formatNotice(app: Application, apiKey: String, method: String, uri: String, data: Map[String, String], ex: UsefulException) =
     <notice version="2.2">
       <api-key>{ apiKey }</api-key>
       <notifier>
@@ -99,7 +98,6 @@ object Airbrake {
         <environment-name>{ app.mode }</environment-name>
       </server-environment>
     </notice>
-  }
 
   protected def formatSession(vars: Map[String, String]) =
     if (!vars.isEmpty) <session>{ formatVars(vars) }</session>

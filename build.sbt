@@ -2,7 +2,7 @@ organization := "com.tegonal"
 
 name := "play-airbrake"
 
-version := "0.3.2-SNAPSHOT"
+version := "0.3.2"
 
 scalacOptions ++= Seq("-Xlint", "-deprecation", "-unchecked", "-encoding", "UTF-8")
 
